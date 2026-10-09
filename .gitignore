@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+bilder/
+clips/
+*.mp4
+messung/*.jsonl
+messung/*.log
+messung/guard-*.json

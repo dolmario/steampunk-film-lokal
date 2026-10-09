@@ -1,0 +1,408 @@
+{
+ "titel": "Die Schwestern von Messingbrunn",
+ "shots": [
+  {
+   "id": 1,
+   "akt": 1,
+   "titel": "Messingbrunn im Morgenlicht",
+   "figuren": [],
+   "bild": "wide view of the steampunk frontier town of Messingbrunn at dawn, copper rooftops, brass towers, wooden boardwalks, thin steam rising, a dusty prairie behind the town wall",
+   "bewegung": "slow aerial push-in over the rooftops, steam curling upward, warm sunrise light, a distant bell chime and soft wind",
+   "weiter": false,
+   "sprechertext": "Messingbrunn, die Stadt aus Messing und Dampf."
+  },
+  {
+   "id": 2,
+   "akt": 1,
+   "titel": "Staub am Horizont",
+   "figuren": [],
+   "bild": "wide view across a dusty prairie at dawn, a huge cloud of dust and steam on the horizon, long shadows, low golden sun",
+   "bewegung": "slow push-in on the horizon, the dust cloud rolls closer, a low distant rumble",
+   "weiter": false,
+   "sprechertext": "Doch an diesem Morgen bebt der Boden."
+  },
+  {
+   "id": 3,
+   "akt": 1,
+   "titel": "Die Silhouette",
+   "figuren": [],
+   "bild": "far away on a ridge the silhouette of an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back, backlit by the sunrise, steam rising from its smokestack",
+   "bewegung": "very slow zoom-in, steam drifts, the huge silhouette stands still, deep rumbling",
+   "weiter": false,
+   "sprechertext": "Ein Kriegsautomat ist erwacht."
+  },
+  {
+   "id": 4,
+   "akt": 1,
+   "titel": "Glühende Augen",
+   "figuren": [],
+   "bild": "close view of the glowing amber lens eyes and riveted brass head of an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back, steam venting from its joints",
+   "bewegung": "slow push-in, the amber eyes pulse, steam vents, a low mechanical growl",
+   "weiter": false,
+   "sprechertext": "Eine Spinne aus Messing, so hoch wie ein Turm."
+  },
+  {
+   "id": 5,
+   "akt": 1,
+   "titel": "Die Stadt schaut hin",
+   "figuren": [],
+   "bild": "townsfolk in wide-brimmed hats standing still on a wooden boardwalk, staring toward the horizon in silence, dust in the air",
+   "bewegung": "static shot, dust and a hat brim flutter in the wind, distant rumbling, a bell rings once",
+   "weiter": false,
+   "sprechertext": "Die Stadt hält den Atem an."
+  },
+  {
+   "id": 6,
+   "akt": 1,
+   "titel": "Die Spinne kommt näher",
+   "figuren": [],
+   "bild": "wide establishing shot over the town wall, an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back larger on the horizon marching toward Messingbrunn, golden sky, empty sky in the upper third",
+   "bewegung": "slow gentle push-in, dust rises from the horizon, rumbling grows",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 7,
+   "akt": 2,
+   "titel": "Der Ratssaal",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "the two sisters stand side by side in a vaulted council hall with brass chandeliers and tall arched windows, serious expressions, medium wide shot",
+   "bewegung": "slow dolly-in on the sisters, chandelier light flickers, the sisters stand still and look forward, murmuring crowd and echo",
+   "weiter": false,
+   "sprechertext": "Der Bürgermeister ruft die beiden Schwestern."
+  },
+  {
+   "id": 8,
+   "akt": 2,
+   "titel": "Der Auftrag",
+   "figuren": [
+    "elara"
+   ],
+   "bild": "medium close-up of Elara listening gravely, a rolled blueprint held out toward her from the edge of the frame, council hall behind her",
+   "bewegung": "she holds a steady serious gaze, a lock of hair moves slightly, steady medium close-up, quiet room tone",
+   "weiter": false,
+   "sprechertext": "Elara und Mira sollen die Stadt retten."
+  },
+  {
+   "id": 9,
+   "akt": 2,
+   "titel": "Mira lächelt",
+   "figuren": [
+    "mira"
+   ],
+   "bild": "medium close-up of Mira with a confident half smile, council hall blurred behind her",
+   "bewegung": "she keeps a steady confident gaze with a small smile, only her hair moves slightly, steady camera, soft room tone",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 10,
+   "akt": 2,
+   "titel": "Der Balkon",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "the sisters stand side by side at a balcony railing seen from slightly behind and aside, looking out at the distant dust cloud, wind in their hair, warm light",
+   "bewegung": "slow orbit around the sisters, wind moves their hair and lace, they stand still, distant rumbling",
+   "weiter": false,
+   "sprechertext": "Keine Zeit zu verlieren."
+  },
+  {
+   "id": 11,
+   "akt": 3,
+   "titel": "Die Werkstatt",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "cluttered Victorian inventor workshop with brass gears, workbenches, hanging Edison bulbs and a glowing forge, both sisters standing at a table with blueprints, wide shot",
+   "bewegung": "slow lateral dolly, sparks drift up from the forge, bulbs sway slightly, the sisters stand still looking at the table, warm crackle",
+   "weiter": false,
+   "sprechertext": "In der Werkstatt beginnt die Arbeit."
+  },
+  {
+   "id": 12,
+   "akt": 3,
+   "titel": "Elara entwirft",
+   "figuren": [
+    "elara"
+   ],
+   "bild": "medium close-up of Elara leaning on a drafting table with a pencil resting on a blueprint of a brass coil, goggles pushed up in her hair, warm lamp light",
+   "bewegung": "she looks down at the blueprint with a steady gaze, small breathing movement, dust motes in the lamp light, quiet scratching sounds",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 13,
+   "akt": 3,
+   "titel": "Mira am Feuer",
+   "figuren": [
+    "mira"
+   ],
+   "bild": "medium shot of Mira standing beside a glowing forge with her arms at her sides, forge glow on her face",
+   "bewegung": "the forge glow flickers on her face, she stands still with a steady gaze, her hair moves slightly, crackling fire",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 14,
+   "akt": 3,
+   "titel": "Schutzbrille",
+   "figuren": [
+    "elara"
+   ],
+   "bild": "close-up of Elara with her brass goggles resting on her forehead, determined steady gaze at the camera, warm rim light",
+   "bewegung": "she holds a steady gaze, a tiny breathing movement, warm light flickers softly, quiet workshop sounds",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 15,
+   "akt": 3,
+   "titel": "Der Entwurf",
+   "figuren": [],
+   "bild": "close-up of a blueprint of a brass coil on a workbench, scattered brass parts, a pencil and a compass, warm lamp light",
+   "bewegung": "slow dolly along the blueprint, dust motes drift, a small gear on the table slowly turns, soft ticking",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 16,
+   "akt": 3,
+   "titel": "Die Spule",
+   "figuren": [],
+   "bild": "a brass Tesla-style aether coil with a glowing blue crystal core on the workbench, thin blue sparks arcing between copper rings",
+   "bewegung": "slow orbit around the coil, blue arcs crackle between the rings, the glow pulses, rising electric hum",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 17,
+   "akt": 3,
+   "titel": "Das Gespräch",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "medium two-shot of the sisters standing close and talking calmly about the plan, workshop behind them",
+   "bewegung": "they stand still and look at each other with calm expressions, tiny head movements, steady two-shot, warm room tone",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 18,
+   "akt": 3,
+   "titel": "Der Kristall",
+   "figuren": [],
+   "bild": "close-up of a glowing blue aether crystal sitting in a brass housing, light spilling over cream lace on the table",
+   "bewegung": "the crystal glow pulses brighter, soft rising hum, reflections shimmer on brass",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 19,
+   "akt": 3,
+   "titel": "Mira, stolz",
+   "figuren": [
+    "mira"
+   ],
+   "bild": "portrait of Mira leaning back against a workbench with her arms crossed, proud steady gaze, forge glow behind her",
+   "bewegung": "slow push-in, she holds a steady gaze, her hair moves slightly in a warm draft, forge crackle",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 20,
+   "akt": 3,
+   "titel": "Die Waffe ist fertig",
+   "figuren": [],
+   "bild": "the finished aether coil mounted on a brass steam wagon, glowing blue crystal core, polished copper rings, soft steam, hero shot",
+   "bewegung": "slow orbit around the machine, the crystal glows steadily, steam wisps, a gentle electric hum",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 21,
+   "akt": 3,
+   "titel": "Gemeinsam",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "medium two-shot of the sisters standing shoulder to shoulder with proud looks, warm workshop light",
+   "bewegung": "they stand still with proud confident expressions, a tiny head movement, steady two-shot, warm room tone",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 22,
+   "akt": 3,
+   "titel": "Elara, Heldin",
+   "figuren": [
+    "elara"
+   ],
+   "bild": "heroic portrait of Elara leaning on the workshop doorframe, golden backlight, brocade and lace catching the light, calm confident gaze",
+   "bewegung": "slow push-in, her hair and lace lift slightly in a warm draft, golden dust motes drift",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 23,
+   "akt": 4,
+   "titel": "Der Dampfwagen",
+   "figuren": [],
+   "bild": "the brass steam wagon carrying the glowing aether coil rolling along a wooden boardwalk street, townsfolk in wide-brimmed hats stepping aside, golden morning light",
+   "bewegung": "tracking shot alongside the wagon, steam puffs from the chimney, the wheels turn, crowd noise and a steam whistle",
+   "weiter": false,
+   "sprechertext": "Jetzt zählt jede Minute."
+  },
+  {
+   "id": 24,
+   "akt": 4,
+   "titel": "Auf dem Kutschbock",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "the sisters sit side by side on the driver's bench of the steam wagon, looking ahead with determined faces, the aether coil glowing behind them",
+   "bewegung": "the wagon rolls on, the sisters sit still looking ahead, wind in their hair, steady medium shot, steam hiss",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 25,
+   "akt": 4,
+   "titel": "Am Stadttor",
+   "figuren": [],
+   "bild": "wide view from the town wall, an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back towering over the prairie just outside the gate, dust and steam, low golden sun",
+   "bewegung": "slow push-in, the machine's legs move slowly in the distance, dust rises, a deep metallic rumble",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 26,
+   "akt": 4,
+   "titel": "Der Stampfer",
+   "figuren": [],
+   "bild": "low-angle view of a huge brass leg of an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back slowly stepping down into the dust of the main street, wooden planks splintering, dust cloud",
+   "bewegung": "slow low-angle shot, the huge leg lowers into the dust, a dust cloud billows, a deep thud, planks creak",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 27,
+   "akt": 4,
+   "titel": "Elara an der Spule",
+   "figuren": [
+    "elara"
+   ],
+   "bild": "medium close-up of Elara standing at the aether coil control panel with brass levers, soft blue light from the side lighting her cheek, her eyes normal and natural, determined steady gaze",
+   "bewegung": "the blue light pulses softly on her cheek, her eyes stay normal and natural without any glow, she keeps a steady gaze, her hair lifts slightly, rising electric hum",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 28,
+   "akt": 4,
+   "titel": "Der Blitz",
+   "figuren": [],
+   "bild": "a thick blue lightning arc leaps from the copper rings of the aether coil to the brass body of an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back, blue light flooding the street",
+   "bewegung": "the arc crackles and strikes the machine, blue light flashes across the street, loud electric crackle, steam bursts",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 29,
+   "akt": 4,
+   "titel": "Die Spinne erstarrt",
+   "figuren": [],
+   "bild": "an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back frozen mid-step, its amber lens eyes flickering and going dark, blue sparks running over its brass body",
+   "bewegung": "the amber eyes flicker and fade, sparks crawl over the metal, the machine stands motionless, the rumble dies away",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 30,
+   "akt": 4,
+   "titel": "Dampf entweicht",
+   "figuren": [],
+   "bild": "an enormous eight-legged steam-powered brass automaton with a bulbous riveted boiler body, glowing amber lens eyes and a wide copper smokestack on its back sinking slowly to rest, venting long plumes of harmless white steam into the morning sky, calm light",
+   "bewegung": "the machine settles slowly, long white plumes of steam rise, calm rumble, bells begin to ring",
+   "weiter": false,
+   "sprechertext": "Die Stadt ist gerettet."
+  },
+  {
+   "id": 31,
+   "akt": 5,
+   "titel": "Die Menge jubelt",
+   "figuren": [],
+   "bild": "the town square full of cheering townspeople in wide-brimmed hats, hats thrown into the air, golden light, joyful atmosphere",
+   "bewegung": "camera glides over the cheering crowd, hats fly up, cheering and applause",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 32,
+   "akt": 5,
+   "titel": "Dank",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "the sisters stand on the town hall steps while the mayor in a frock coat tips his hat toward them, crowd behind, warm light",
+   "bewegung": "the mayor tips his hat, the sisters smile with relief and stay still, applause rising",
+   "weiter": false,
+   "sprechertext": "Messingbrunn dankt seinen Heldinnen."
+  },
+  {
+   "id": 33,
+   "akt": 5,
+   "titel": "Abendlicht",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "the sisters stand at the railing of an airship deck at sunset, golden light, the town and airships below, relaxed proud expressions",
+   "bewegung": "slow orbit around the sisters, hair and lace moving in the breeze, they stand still, wind and distant bells",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 34,
+   "akt": 5,
+   "titel": "Schwestern",
+   "figuren": [
+    "elara",
+    "mira"
+   ],
+   "bild": "the sisters stand shoulder to shoulder smiling warmly on the airship deck, golden backlight",
+   "bewegung": "they stand still smiling, soft golden light, wind in their hair, steady two-shot",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 35,
+   "akt": 5,
+   "titel": "Feuerwerk",
+   "figuren": [],
+   "bild": "night sky over Messingbrunn with fireworks above the brass towers, airships glowing with lanterns, reflections in the canal",
+   "bewegung": "fireworks burst over the skyline, airships drift past, distant cheers",
+   "weiter": false,
+   "sprechertext": ""
+  },
+  {
+   "id": 36,
+   "akt": 5,
+   "titel": "Ende",
+   "figuren": [],
+   "bild": "wide final shot of Messingbrunn at dusk, calm steam over the rooftops, the dormant brass spider silhouette resting on the ridge, airships on the horizon",
+   "bewegung": "slow pull-back, the town lights twinkle, a gentle bell chime and soft wind",
+   "weiter": false,
+   "sprechertext": "Ende."
+  }
+ ]
+}

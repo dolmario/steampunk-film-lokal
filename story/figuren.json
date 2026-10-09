@@ -1,0 +1,24 @@
+{
+  "stil": "cinematic photograph, shallow depth of field, warm golden backlight, rich detail in brocade, lace, skin and brass",
+  "ort": "Messingbrunn, a steampunk frontier town of copper rooftops, brass towers, wooden boardwalks and steam pipes, townsfolk in wide-brimmed hats",
+  "figuren": {
+    "elara": {
+      "name": "Elara",
+      "rolle": "ältere Schwester, Erfinderin",
+      "gesicht": "a woman in her late twenties with Slavic features, high cheekbones, a slim straight nose, full lips with dusty-rose lipstick, blue-grey eyes, fair skin with a few faint freckles, long wavy platinum-blonde hair falling over one shoulder, brass aviator goggles pushed up in her hair",
+      "kleidung": "ornate baroque steampunk gown of burgundy brocade with gold embroidery, low-cut corset bodice with a deep neckline, cream lace sleeves, brass compass buckle on a leather belt, leather bracers, a delicate gold chain with a small amber pendant, a floor-length skirt with an open front panel of cream lace",
+      "referenz_bild": "",
+      "koerper": "tall and curvy with an hourglass figure, full bust, very narrow corseted waist, long slender arms",
+      "merkmale": "brass aviator goggles on her head, amber pendant on a thin gold chain, brass compass buckle on the belt, leather bracers on both forearms, burgundy brocade with gold embroidery, cream lace sleeves"
+    },
+    "mira": {
+      "name": "Mira",
+      "rolle": "jüngere Schwester, Mechanikerin",
+      "gesicht": "a woman in her mid twenties with warm olive-tan skin and Latina features, high cheekbones, full lips with deep-red lipstick, large dark-brown eyes with strong dark eyebrows, a small beauty mark above the corner of her lip, very long thick wavy jet-black hair worn loose over both shoulders",
+      "kleidung": "ornate baroque steampunk gown of emerald-green brocade with copper embroidery, low-cut corset bodice with a deep neckline, cream lace sleeves, a floor-length skirt, large gold hoop earrings, leather tool belt with a small brass wrench, brown leather gloves",
+      "referenz_bild": "",
+      "koerper": "slightly shorter than her sister, curvy with an hourglass figure, full bust, narrow corseted waist",
+      "merkmale": "very long loose jet-black wavy hair, warm olive-tan skin, large gold hoop earrings, a small beauty mark above the lip, emerald-green brocade with copper embroidery, cream lace sleeves, brass wrench in the tool belt, brown leather gloves"
+    }
+  }
+}
