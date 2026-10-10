@@ -56,7 +56,7 @@ With `MODELL=dev` (FLUX.2 dev, GGUF Q4_K_M): 20 steps, FluxGuidance 4.0, same re
 `workflows/` holds the ComfyUI API templates with the exact node connections (`["node id", output port]`):
 
 - `01-FIGURENBLATT-API-VORLAGE.json`: character reference.
-- `02-REFERENZBILD-API-VORLAGE.json`: still with two references (face `10`–`14`, full body `20`–`24`) → `CFGGuider` `90` → `SamplerCustomAdvanced` `95` → `VAEDecode` `96` → `SaveImage` `97`. Note: this template uses 1536 × 864; the runner itself renders 1344 × 768.
+- `02-REFERENZBILD-API-VORLAGE.json`: still with two references (face `10`–`14`, full body `20`–`24`) → `CFGGuider` `90` → `SamplerCustomAdvanced` `95` → `VAEDecode` `96` → `SaveImage` `97`. Note: this older template uses 1536 × 864; the runner renders 1344 × 768. It stays unchanged. The runner values are in two additional templates, one reference-pair (face, body) each: `02-REFERENZBILD-KLEIN4-RUNNER-1344x768-API-VORLAGE.json` (Klein 4B, 4 steps, CFG 1.0, euler, seed 11) and `02-REFERENZBILD-DEV-RUNNER-1344x768-API-VORLAGE.json` (FLUX.2 dev GGUF Q4_K_M, 20 steps, FluxGuidance 4.0). Inputs to replace: node `4` (text), `10` (face image), `20` (body image). `workflows/VORLAGEN-AUS-RUNNER.py` regenerates both from `runner/ablaeufe.py` (text only). `03-CLIP-API-VORLAGE.json` already matches the runner (5 s, seed 11, tile 512); inputs: node `1` (start image), `5` (motion text).
 - `03-CLIP-API-VORLAGE.json`: clip. Core connections:
   - `1` LoadImage → `2` ResizeImageMaskNode → `3` LTXVPreprocess (start image)
   - `4` CLIPLoader (Gemma) → `5`/`6` CLIPTextEncode → `10` LTXVConditioning (port 0 positive, port 1 negative)
@@ -82,6 +82,22 @@ Same scripts, same story, seed 11. Times from `messung/beispiele/`.
 The EVO full run of 10 Oct 2026 used the existing ComfyUI installation and existing models (no clean reinstall). Details: [GPU-RUN-NACHWEIS-20261010.md](GPU-RUN-NACHWEIS-20261010.md) (German).
 
 Memory: the RTX 3080 Ti ran with a VRAM peak of 12,068 of 12,288 MiB and a minimum of 3.9 GB free RAM. The dev run left 0.9 GB of 32 GB RAM free. Cards below 12 GB VRAM, less than 16 GB RAM, Linux and Mac were not tested.
+
+## Rebuilding: three tested hardware profiles
+
+Start process, runner and LTX values are identical; runtime and model location differ.
+
+| Profile | Memory | Image model | Runtime | Tested |
+|---|---|---|---|---|
+| AMD Strix Halo (EVO-X2) | 64 GB unified memory (one shared pool, not extra VRAM) | Klein 4B | existing ComfyUI 0.38.0 with ROCm | full film, 4 h 49 min |
+| NVIDIA 12 GB VRAM + 16 GB RAM (RTX 3080 Ti) | 12 GB / 16 GB | Klein 4B | ComfyUI 0.38.0 Windows portable | full film, 2 h 55 min, VRAM peak 12,068 of 12,288 MiB |
+| NVIDIA 24 GB VRAM + 32 GB RAM (RTX 3090 Ti) | 24 GB / 32 GB | Klein 4B, optional dev | ComfyUI 0.38.0 portable | Klein 1 h 29 min; dev 3 h 47 min (0.9 GB RAM left) |
+
+Not tested, so not promised: less than 12 GB VRAM or 16 GB RAM, dev on 16 GB RAM, Linux, Mac, HDD, a fresh ROCm/ComfyUI installation.
+
+Steps: (1) unpack into a folder without spaces; (2) have ComfyUI running in the profile's runtime, NumPy and Pillow in the Python that starts the runner, `ffmpeg`/`ffprobe` in PATH (ComfyUI-GGUF only for `MODELL=dev`); (3) put the model files from the table below into the ComfyUI model folders (`diffusion_models`, `text_encoders`, `vae`, `latent_upscale_models`, `unet` for GGUF); (4) set `COMFYUI_DIR` (folder with `main.py`) and `COMFYUI_PYTHON`; (5) run `START-SELBSTLAEUFER.cmd`; (6) find `bilder\`, `clips\` and `film_roh.mp4` in the folder. For a single shot first: `python runner/schritt2_standbilder.py --geraet mypc --shots 12`, then `schritt3_clips.py` the same way (ComfyUI on port 8189).
+
+Common problems: port 8189 busy → close the other ComfyUI with Ctrl+C; grey noise or load abort → ComfyUI needs `--disable-pinned-memory` (the runner sets it); `ModuleNotFoundError` for `lib`/`ablaeufe` → the scripts add their own folder to `sys.path`, otherwise add the `runner` folder as a line in `python_embeded\python313._pth` (the first runner folder listed wins).
 
 ## How to start
 

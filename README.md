@@ -56,7 +56,7 @@ Mit `MODELL=dev` (FLUX.2 dev, GGUF Q4_K_M): 20 Schritte, FluxGuidance 4.0, sonst
 In `workflows/` liegen die ComfyUI-API-Vorlagen. Dort stehen die exakten Node-Verbindungen (`["Node-ID", Ausgabe-Port]`):
 
 - `01-FIGURENBLATT-API-VORLAGE.json`: Figurenreferenz.
-- `02-REFERENZBILD-API-VORLAGE.json`: Standbild mit zwei Referenzen (Gesicht `10`–`14`, ganzer Körper `20`–`24`) → `CFGGuider` `90` → `SamplerCustomAdvanced` `95` → `VAEDecode` `96` → `SaveImage` `97`. Hinweis: Diese Vorlage hat 1536 × 864; der Runner selbst rechnet 1344 × 768.
+- `02-REFERENZBILD-API-VORLAGE.json`: Standbild mit zwei Referenzen (Gesicht `10`–`14`, ganzer Körper `20`–`24`) → `CFGGuider` `90` → `SamplerCustomAdvanced` `95` → `VAEDecode` `96` → `SaveImage` `97`. Hinweis: Diese ältere Vorlage hat 1536 × 864; der Runner rechnet 1344 × 768. Sie bleibt unverändert liegen; die Runner-Werte stehen in den `-RUNNER-`-Vorlagen unten.
 - `03-CLIP-API-VORLAGE.json`: Clip. Kern der Verbindungen:
   - `1` LoadImage → `2` ResizeImageMaskNode → `3` LTXVPreprocess (Startbild)
   - `4` CLIPLoader (Gemma) → `5`/`6` CLIPTextEncode → `10` LTXVConditioning (Port 0 positiv, Port 1 negativ)
@@ -64,6 +64,18 @@ In `workflows/` liegen die ComfyUI-API-Vorlagen. Dort stehen die exakten Node-Ve
   - `18` LTXVDualCFGGuider + `17` ManualSigmas + `16` euler_ancestral → `19` SamplerCustomAdvanced → `20` LTXVSeparateAVLatent
   - `22` LTXVLatentUpsampler (Upscaler `21`) → `23` LTXVImgToVideoInplace (Strength 1.0) → `24` ConcatAV (Audio aus `20`, Port 1) → `29` SamplerCustomAdvanced → `30` Separate
   - `31` VAEDecodeTiled → `32` CreateVideo → `33` SaveVideo
+
+**Welche Datei zu welchem Schritt gehört (so wie `runner/ablaeufe.py` sie baut):**
+
+| Schritt | Vorlage | Quelle im Runner | Eingabe (zu ersetzen) | Modell / Sampler |
+|---|---|---|---|---|
+| Figurenreferenz, 1024 × 1024 | `01-FIGURENBLATT-API-VORLAGE.json` | `ablaeufe.klein(..., 1024, 1024)`, keine Referenzen | Node `4` Text | Klein 4B, 4 Schritte, CFG 1.0, euler, Seed 11 |
+| Standbild Klein 4B, 1344 × 768 | `02-REFERENZBILD-KLEIN4-RUNNER-1344x768-API-VORLAGE.json` | `ablaeufe.klein(..., modell="klein4")` | Node `4` Text, `10` Gesicht, `20` Körper (Dateinamen aus dem ComfyUI-`input`-Ordner) | wie oben |
+| Standbild FLUX.2 dev, 1344 × 768 | `02-REFERENZBILD-DEV-RUNNER-1344x768-API-VORLAGE.json` | `ablaeufe.dev(...)` | wie oben | GGUF Q4_K_M, 20 Schritte, FluxGuidance 4.0, `UnetLoaderGGUF` |
+| Standbild 1536 × 864 (alt) | `02-REFERENZBILD-API-VORLAGE.json` | nicht mehr vom Runner benutzt | wie oben | wie Klein 4B |
+| Clip | `03-CLIP-API-VORLAGE.json` | `ablaeufe.ltx_i2v(..., 5 s, Seed 11, tile 512)`; Werte stimmen mit dem Runner überein | Node `1` Startbild, `5` Bewegungstext | LTX-2.5 distilled, Werte siehe Tabelle oben |
+
+Die Runner-Vorlagen haben je eine Figur (zwei Referenzen: Gesicht, Körper). Bei einer zweiten Figur im Shot hängt der Runner pro Referenz die vier Nodes `LoadImage` → `ImageScaleToTotalPixels` → `VAEEncode` → `ReferenceLatent` (Klein: positiv und negativ) an. `workflows/VORLAGEN-AUS-RUNNER.py` schreibt die beiden Runner-Vorlagen aus `ablaeufe.py` neu (nur Text, kein ComfyUI).
 
 In den Vorlagen sind `REPLACE...`-Platzhalter für Bild und Prompt; im ComfyUI-API-Format kannst du sie per `POST /prompt` abschicken (Ablauf in [AUTHENTIFIZIERUNG.md](AUTHENTIFIZIERUNG.md)).
 
@@ -83,7 +95,41 @@ Der EVO-Komplettlauf vom 10.10.2026 nutzte die vorhandene ComfyUI-Installation u
 
 Speicher: Die RTX 3080 Ti lief mit VRAM-Spitze 12 068 von 12 288 MiB und minimal 3,9 GB freiem RAM. Der dev-Lauf ließ auf 32 GB RAM 0,9 GB frei. Karten unter 12 GB VRAM, unter 16 GB RAM, Linux und Mac wurden nicht getestet.
 
-## So startest du
+## Nachbauen: drei getestete Hardwareprofile
+
+Startprozess, Runner und LTX-Werte sind in allen Profilen gleich. Es unterscheiden sich Runtime und die Modellauswahl.
+
+| Profil | Speicher | Bildmodell | Runtime | Getestet |
+|---|---|---|---|---|
+| **AMD Strix Halo (EVO-X2)** | 64 GB gemeinsamer physischer Speicher (RAM und GPU-Speicher teilen sich dieselben 64 GB, es ist kein zusätzlicher VRAM) | Klein 4B | vorhandene ComfyUI-Installation 0.38.0 mit ROCm (PyTorch 2.9.1+rocm7.2.1) | ganzer Film, 4 h 49 min |
+| **NVIDIA 12 GB VRAM + 16 GB RAM** (RTX 3080 Ti) | 12 GB VRAM, 16 GB RAM | Klein 4B | ComfyUI 0.38.0 Windows-Portable (NVIDIA) | ganzer Film, 2 h 55 min; VRAM-Spitze 12 068 von 12 288 MiB, also kein Spielraum |
+| **NVIDIA 24 GB VRAM + 32 GB RAM** (RTX 3090 Ti) | 24 GB VRAM, 32 GB RAM | Klein 4B, optional dev | ComfyUI 0.38.0 Portable, Torch 2.14.0+cu130 | Klein: 1 h 29 min; dev: 3 h 47 min (dann nur noch 0,9 GB RAM frei) |
+
+Nicht getestet und deshalb nicht zugesagt: weniger als 12 GB VRAM oder 16 GB RAM, dev auf 16 GB RAM, Linux, Mac, HDD statt SSD, eine frische Neuinstallation von ComfyUI/ROCm. Die Zeiten oben gelten für die jeweilige Maschine.
+
+Was sich je Profil ändert:
+
+- **Halo:** `COMFYUI_PYTHON` zeigt auf das Python der vorhandenen ROCm-ComfyUI-Umgebung (häufig ein `venv`), nicht auf `python_embeded`.
+- **NVIDIA 12 GB / 24 GB:** `COMFYUI_PYTHON` ist `python_embeded\python.exe` der Portable-Fassung. Auf der 24-GB-Karte kannst du `set MODELL=dev` probieren; auf 12 GB bleibt es bei Klein 4B.
+- **Modellpfade:** dieselben Dateinamen in allen Profilen (Tabelle „Modelle und Lizenzen“); nur der ComfyUI-Ordner, in dem sie liegen, ist ein anderer.
+
+## Nachbauweg in sechs Schritten
+
+1. **Entpacken.** Repository als ZIP laden oder klonen und in einen Ordner ohne Leerzeichen legen, z. B. `C:\steampunk-film`. Alle Ausgaben (`bilder\`, `clips\`, `film_roh.mp4`, `messung\`) landen darin.
+2. **Umgebung.** ComfyUI (0.38.0) läuft schon oder wird nach der jeweiligen ComfyUI-Anleitung eingerichtet. In dem Python, das später den Runner startet, müssen NumPy und Pillow vorhanden sein; `ffmpeg` und `ffprobe` müssen im Pfad liegen. Der Custom-Node [ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF) wird nur für `MODELL=dev` gebraucht.
+3. **Modelle.** Die Dateien aus der Tabelle „Modelle und Lizenzen“ in die üblichen ComfyUI-Modellordner legen: `models\diffusion_models` (Klein, LTX-Transformer; für dev-GGUF `models\unet`), `models\text_encoders` (Qwen3-4B, Gemma, Mistral), `models\vae` (Flux2-VAE, LTX Video-/Audio-VAE) und `models\latent_upscale_models` (LTX-Upscaler). Das Paket lädt nichts selbst. Wenn ComfyUI einen Dateinamen nicht findet, bricht der Lauf beim Laden mit dem Namen ab.
+4. **Pfadzeilen.** Zwei Zeilen setzen (Pfade anpassen):
+   ```text
+   set COMFYUI_DIR=C:\Pfad\zu\ComfyUI
+   set COMFYUI_PYTHON=C:\Pfad\zu\python.exe
+   ```
+   `COMFYUI_DIR` ist der Ordner mit `main.py`. Optional `set GERAET=meinpc` (Name der Messdatei) und `set MODELL=dev`.
+5. **Starten.** `START-SELBSTLAEUFER.cmd` im Repository-Ordner ausführen, oder direkt `python runner/selbstlaeufer.py --geraet meinpc --comfyui <ComfyUI-Ordner> --modell klein4 --seed 11`. Der Lauf macht der Reihe nach Figurenreferenzen (6), Standbilder (36), Clips (36, je Clip ein frisches ComfyUI) und den Rohschnitt. Ist er unterbrochen, setzt ein neuer Start bei den fehlenden Teilen fort.
+6. **Ergebnis.** `bilder\figuren\`, `bilder\standbilder\`, `clips\shot_NN.mp4` und `film_roh.mp4`. Zum Ausprobieren vorab nur einen Shot: `python runner/schritt2_standbilder.py --geraet meinpc --shots 12` und `python runner/schritt3_clips.py --geraet meinpc --shots 12` (ComfyUI muss dafür auf Port 8189 laufen).
+
+Wer die Graphen lieber selbst in ComfyUI-API-Form abschickt: die Vorlagen in `workflows/` (Tabelle oben) sind dieselben Graphen, die der Runner schickt.
+
+## Ausführlicher Start
 
 1. **ComfyUI** installieren (verwendet: ComfyUI 0.38.0; auf NVIDIA die Windows-Portable-Fassung, auf dem EVO-X2 ComfyUI mit ROCm für Windows).
 2. **Modelle** aus der Tabelle unten in die ComfyUI-Ordner legen. Das Paket lädt nichts selbst herunter.
@@ -122,9 +168,12 @@ Platz für die Klein-4B-Modelle samt Video rund 49 GB. Die Lizenzseiten wurden a
 
 ## Wenn etwas hakt
 
-- `Port 8189 ist belegt`: das laufende ComfyUI zuerst selbst beenden.
+- `Port 8189 ist belegt`: ein anderes ComfyUI (oder ein hängengebliebener Python-Prozess) hört dort. In dem Fenster, in dem es läuft, mit Strg+C beenden, dann neu starten. Der Selbstläufer beendet nur sein eigenes ComfyUI.
+- Clip ist graues Rauschen oder ComfyUI bricht beim Laden ab: ComfyUI muss mit `--disable-pinned-memory` laufen. Der Selbstläufer und `clips_einzeln.py` setzen das selbst; wer ComfyUI von Hand startet, muss es angeben.
+- `ModuleNotFoundError: No module named 'lib'` oder `'ablaeufe'`: die Skripte tragen ihren Ordner selbst in `sys.path` ein. Kommt der Fehler trotzdem (eigener Aufruf eines Skripts aus anderem Python-Setup, z. B. bei ComfyUI Portable), in `python_embeded\python313._pth` eine Zeile mit dem Pfad des Ordners `runner` ergänzen. Stehen dort mehrere Runner-Ordner, gewinnt der erste.
 - Abbruch wegen Speicher: andere Programme schließen und neu starten; fertige Teile werden übernommen. Bei einem Clipfehler rechnet `schritt3_clips.py` selbst eine kleinere Kachel (256); in unseren Läufen war das nie nötig.
-- `ModuleNotFoundError: No module named 'lib'` kommt nur mit alten Fassungen des Pakets vor.
+- `ffmpeg`/`ffprobe` nicht gefunden: im Pfad der Eingabeaufforderung fehlt der ffmpeg-Ordner.
+- `START-SELBSTLAEUFER.cmd` benennt die Messdatei nach dem Rechnernamen; `set GERAET=meinpc` vorher setzt einen eigenen Namen.
 - Der Messwert `abstand_start` (erstes Clipbild gegen Standbild) lag bei uns zwischen 3,5 und 8,5. Erst über 20 gilt ein Clip als kaputt.
 
 ## Ordner
