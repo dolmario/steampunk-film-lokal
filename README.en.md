@@ -70,6 +70,8 @@ Klein 4B plus the video models need about 49 GB of disk space. The licence pages
 
 ## Validation of this download
 
-Measurements are from the documented normal three-machine runs. This published package adds model selection and the corrected Python search path. A complete GPU run from a fresh installation of this exact package has not yet been verified; checks without GPU and failure paths are documented separately. The new music short film also uses targeted new ChatGPT image references and is not an unchanged output of this download.
+On 10 October 2026, the publicly downloaded commit `69f60db697c5b4930192c2b0d917621082cb88b7` was run completely on the GMKtec EVO-X2 (AMD Strix Halo, Ryzen AI Max+ 395): 6 character references, 36 new stills, 36 valid clips, and a rough cut. No previous image or video outputs were reused in this test. Mean clip time: 430.0 s (381.9–447.4); complete wall time: 4 h 49 min 46 s. The generating scripts and story files tested remain unchanged in this documentation update. [Measurements and validation limits](GPU-RUN-NACHWEIS-20261010.md).
+
+The existing verified ComfyUI installation and already available model weights were used. A fresh installation has not been tested. The table above describes earlier hardware runs; the new EVO-X2 test is documented separately. The music short film also uses targeted new ChatGPT image references and is not an unchanged output of this download.
 
 The API connection is local and uses no login. See [authentication and requests](AUTHENTIFIZIERUNG.md).

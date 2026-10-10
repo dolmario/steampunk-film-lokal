@@ -70,6 +70,8 @@ Platz für die Klein-4B-Modelle samt Video rund 49 GB. Die Lizenzseiten wurden a
 
 ## Teststand dieses Downloads
 
-Die Messwerte stammen aus den normalen dokumentierten Drei-Rechner-Läufen. Dieses veröffentlichte Paket ergänzt die Modelloption und den korrigierten Python-Suchpfad. Sein vollständiger GPU-Lauf nach einer frischen Installation wurde noch nicht geprüft; die Prüfung ohne GPU und die Fehlerpfade sind separat dokumentiert. Der neue Bandfilm nutzt außerdem gezielt neue ChatGPT-Bildvorlagen und ist kein unveränderter Output dieses Downloads.
+Am 10.10.2026 wurde der öffentlich heruntergeladene Commit `69f60db697c5b4930192c2b0d917621082cb88b7` auf dem GMKtec EVO-X2 (AMD Strix Halo, Ryzen AI Max+ 395) vollständig ausgeführt: 6 Figurenreferenzen, 36 neue Standbilder, 36 gültige Clips und Rohschnitt. Kein älteres Bild oder Video wurde für diesen Test wiederverwendet. Clip im Mittel: 430.0 s (381.9–447.4); gesamter Lauf: 4 h 49 min 46 s. Die getesteten generierenden Skripte und Story-Dateien bleiben in diesem Dokumentationsupdate unverändert. [Messung und Prüfgrenzen](GPU-RUN-NACHWEIS-20261010.md).
+
+Verwendet wurden die vorhandene verifizierte ComfyUI-Installation und bereits vorhandene Modellgewichte. Eine vollständige Neuinstallation wurde nicht geprüft. Die Tabelle oben beschreibt die früheren Hardwareläufe; der neue EVO-X2-Test ist separat dokumentiert. Der neue Bandfilm verwendet zusätzlich gezielt erzeugte ChatGPT-Bildvorlagen und ist kein unveränderter Output dieses Downloads.
 
 Die API-Verbindung ist lokal und ohne Login. Details: [Authentifizierung und Anfragen](AUTHENTIFIZIERUNG.md).
