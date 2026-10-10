@@ -1,30 +1,93 @@
-# The Sisters of Messingbrunn
+# Local steampunk film: images and clips with FLUX.2 Klein and LTX-2.5
 
 [Deutsch](README.md)
 
-A steampunk short film made entirely on local hardware: 36 shots of 5 seconds each. A giant steam spider threatens the town of Messingbrunn, and the sisters Elara and Mira build an aether coil. This package creates the whole film from scratch on your own computer: characters, stills, clips and a rough cut. You only change text (see [PROMPTS-AENDERN.md](PROMPTS-AENDERN.md), German).
+This repository shows a locally runnable pipeline from character descriptions to a rough cut:
 
-Included: scripts, story and workflows. Not included: model weights, finished images and the music from the video.
+1. character references with FLUX.2 Klein 4B (optionally FLUX.2 dev),
+2. one still per shot that uses those references,
+3. 5-second clips with LTX-2.5 from each still,
+4. rough cut `film_roh.mp4` (no sound) via ffmpeg.
 
-## What we did on three machines
+A small **example** story is included ("Messingbrunn": a steam spider, the sisters Elara and Mira, 36 shots). It is there to try things out; replace it with your own (see [PROMPTS-AENDERN.md](PROMPTS-AENDERN.md), German).
 
-Same scripts, same story, seed 11. Times from the measurement files (`messung/beispiele/drei-rechner.csv`).
+## Two things that are not the same
+
+| | This repository (GitHub run) | Music video "Sickheadz – lost All I've Loved" (Tom Bartelt / Sickheadz) |
+|---|---|---|
+| Content | Example pipeline: Klein, optional dev, LTX-2.5, rough cut | finished music film, cut later |
+| Image sources | only what the workflows here generate | additionally GPT image templates for consistent characters |
+| Sound | none (silent rough cut) | band track, unchanged in length and tempo; no narrator |
+| In the download | scripts, story, workflows, measurements | not included (band track and GPT images are not in the download) |
+
+So running this repository produces a rough cut from the example pipeline. The music film is a separate edit with its own image material.
+
+## Actual settings
+
+Everything is in `runner/ablaeufe.py`; the values below are taken from there.
+
+**Stills (FLUX.2 Klein 4B)**
+
+| Setting | Value |
+|---|---|
+| Size | 1344 × 768 |
+| Seed | 11 |
+| Steps (Flux2Scheduler) | 4 |
+| CFG (CFGGuider) | 1.0 |
+| Sampler | euler |
+| References | per reference image: LoadImage → ImageScaleToTotalPixels (1.0 MP) → VAEEncode → ReferenceLatent (chained on positive and negative) |
+
+With `MODELL=dev` (FLUX.2 dev, GGUF Q4_K_M): 20 steps, FluxGuidance 4.0, same reference chain otherwise.
+
+**Clips (LTX-2.5 distilled, image-to-video)**
+
+| Setting | Value |
+|---|---|
+| Length | 5 s, 24 fps, 121 frames |
+| First stage | 640 × 360 latent, start image with strength 0.7, sigmas `1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0` |
+| Upscale | latent upscaler ×2 |
+| Second stage | start image again with strength 1.0, sigmas `0.85, 0.7250, 0.4219, 0.0` |
+| Sampler | euler_ancestral, seed 11 |
+| Decode | VAEDecodeTiled, tile_size 512 (overlap 64, temporal 64/16) |
+| Output | mp4 (h264) |
+
+## The downloadable workflows
+
+`workflows/` holds the ComfyUI API templates with the exact node connections (`["node id", output port]`):
+
+- `01-FIGURENBLATT-API-VORLAGE.json`: character reference.
+- `02-REFERENZBILD-API-VORLAGE.json`: still with two references (face `10`–`14`, full body `20`–`24`) → `CFGGuider` `90` → `SamplerCustomAdvanced` `95` → `VAEDecode` `96` → `SaveImage` `97`. Note: this template uses 1536 × 864; the runner itself renders 1344 × 768.
+- `03-CLIP-API-VORLAGE.json`: clip. Core connections:
+  - `1` LoadImage → `2` ResizeImageMaskNode → `3` LTXVPreprocess (start image)
+  - `4` CLIPLoader (Gemma) → `5`/`6` CLIPTextEncode → `10` LTXVConditioning (port 0 positive, port 1 negative)
+  - `11` EmptyLTXVLatentVideo (640×360, 121) → `12` LTXVImgToVideoInplace (strength 0.7) → `14` LTXVConcatAVLatent (with audio latent `13`)
+  - `18` LTXVDualCFGGuider + `17` ManualSigmas + `16` euler_ancestral → `19` SamplerCustomAdvanced → `20` LTXVSeparateAVLatent
+  - `22` LTXVLatentUpsampler (upscaler `21`) → `23` LTXVImgToVideoInplace (strength 1.0) → `24` ConcatAV (audio from `20`, port 1) → `29` SamplerCustomAdvanced → `30` Separate
+  - `31` VAEDecodeTiled → `32` CreateVideo → `33` SaveVideo
+
+The templates contain `REPLACE...` placeholders for image and prompt; in ComfyUI API format you can submit them with `POST /prompt` (flow in [AUTHENTIFIZIERUNG.md](AUTHENTIFIZIERUNG.md), German).
+
+## Measured runs
+
+Same scripts, same story, seed 11. Times from `messung/beispiele/`.
 
 | Machine | Memory | Images | Clip on average | Whole film from scratch |
 |---|---|---|---|---|
-| GMKtec EVO-X2 (AMD Strix Halo, Radeon 8060S) | shared memory | FLUX.2 Klein 4B | 436 s (397–466) | not measured from scratch; 36 clips: compute time 4 h 22 min, wall time with restarts 4 h 35 min |
+| GMKtec EVO-X2 (AMD Strix Halo, Ryzen AI Max+ 395, Radeon 8060S), commit `69f60db` of 10 Oct 2026 | shared memory | FLUX.2 Klein 4B | 430 s (381.9–447.4) | 4 h 49 min 46 s (6 references, 36 new stills, 36 valid clips, rough cut, 0 retries) |
+| GMKtec EVO-X2, earlier run | shared memory | FLUX.2 Klein 4B | 436 s (397–466) | not measured from scratch; 36 clips: compute time 4 h 22 min, wall time with restarts 4 h 35 min |
 | NVIDIA RTX 3080 Ti | 12 GB VRAM, 16 GB RAM | FLUX.2 Klein 4B, 13 s per image | 252 s (245–295) | 2 h 55 min |
 | NVIDIA RTX 3090 Ti | 24 GB VRAM, 32 GB RAM | FLUX.2 Klein 4B, 8.5 s per image | 102 s (90–112) | 1 h 29 min |
 | NVIDIA RTX 3090 Ti | 24 GB VRAM, 32 GB RAM | FLUX.2 dev (GGUF Q4_K_M), 242 s per image | 90 s (90–96) | 3 h 47 min |
 
-Every run: 36 of 36 clips, no aborts, no retries. The RTX 3080 Ti is at the limit: VRAM peak 12,068 of 12,288 MiB, free RAM down to 3.9 GB. The FLUX.2 dev run left only 0.9 GB of 32 GB RAM free. Not tested: cards below 12 GB VRAM, less than 16 GB RAM, Linux, Mac.
+The EVO full run of 10 Oct 2026 used the existing ComfyUI installation and existing models (no clean reinstall). Details: [GPU-RUN-NACHWEIS-20261010.md](GPU-RUN-NACHWEIS-20261010.md) (German).
 
+Memory: the RTX 3080 Ti ran with a VRAM peak of 12,068 of 12,288 MiB and a minimum of 3.9 GB free RAM. The dev run left 0.9 GB of 32 GB RAM free. Cards below 12 GB VRAM, less than 16 GB RAM, Linux and Mac were not tested.
 
 ## How to start
 
-1. Install **ComfyUI** (tested: ComfyUI 0.38.0; the Windows portable build on NVIDIA, ComfyUI with ROCm for Windows on the EVO-X2).
+1. Install **ComfyUI** (used: ComfyUI 0.38.0; the Windows portable build on NVIDIA, ComfyUI with ROCm for Windows on the EVO-X2).
 2. Put the **models** from the table below into the ComfyUI folders. The package does not download anything itself.
-3. **ffmpeg** and **ffprobe** must be on the path (`ffmpeg -version` must answer).
+3. **ffmpeg** and **ffprobe** on the path (`ffmpeg -version` must answer).
 4. In a command prompt (adjust the paths):
    ```text
    set COMFYUI_DIR=C:\path\ComfyUI_windows_portable\ComfyUI
@@ -32,13 +95,17 @@ Every run: 36 of 36 clips, no aborts, no retries. The RTX 3080 Ti is at the limi
    START-SELBSTLAEUFER.cmd
    ```
    Optional before that: `set MODELL=dev` (FLUX.2 dev instead of Klein 4B) or `set GERAET=mypc` (name of the measurement file).
-5. Wait. At the end you get `bilder\`, `clips\` and `film_roh.mp4` (no sound), and the measurements in `messung\<device>.jsonl`.
+   Direct call as in the EVO run:
+   ```text
+   python runner/selbstlaeufer.py --geraet evo --comfyui <ComfyUI folder> --modell klein4 --seed 11
+   ```
+5. At the end you get `bilder\`, `clips\` and `film_roh.mp4` (no sound), and the measurements in `messung\<device>.jsonl`.
 
 The runner starts its own ComfyUI on port 8189, a fresh one for every clip, with `--disable-pinned-memory`. Without that option LTX-2.5 gave us grey noise or aborted while loading. Port 8189 must be free; the runner never stops other programs. Close browsers, games and other AI tools first.
 
 ## Your own story
 
-`story/figuren.json` describes the characters, `story/shots.json` the 36 shots (`bild` = image, `bewegung` = motion, `figuren` = characters). After a change, the next start only recomputes what is affected: a changed `bewegung` only the clip, a changed `bild` the still and the clip, a changed character her references and every shot she appears in. Old files move to `alt_...` folders.
+`story/figuren.json` describes the characters, `story/shots.json` the shots (`bild` = image, `bewegung` = motion, `figuren` = characters). After a change, the next start only recomputes what is affected: a changed `bewegung` only the clip, a changed `bild` the still and the clip, a changed character her references and every shot she appears in. Old files move to `alt_...` folders.
 
 ## Models and licences
 
@@ -62,16 +129,9 @@ Klein 4B plus the video models need about 49 GB of disk space. The licence pages
 
 ## Folders
 
-- `story/`: story, characters, shots.
+- `story/`: example story, characters, shots.
 - `runner/`: runner and single steps (`schritt1` to `schritt5`, `clips_einzeln.py`), tests without GPU (`test_runner_ohne_gpu.py`).
 - `workflows/`: API templates for ComfyUI.
-- `messung/beispiele/`: our measurements from the three machines.
+- `messung/beispiele/`: measurements from the runs.
 
-
-## Validation of this download
-
-On 10 October 2026, the publicly downloaded commit `69f60db697c5b4930192c2b0d917621082cb88b7` was run completely on the GMKtec EVO-X2 (AMD Strix Halo, Ryzen AI Max+ 395): 6 character references, 36 new stills, 36 valid clips, and a rough cut. No previous image or video outputs were reused in this test. Mean clip time: 430.0 s (381.9–447.4); complete wall time: 4 h 49 min 46 s. The generating scripts and story files tested remain unchanged in this documentation update. [Measurements and validation limits](GPU-RUN-NACHWEIS-20261010.md).
-
-The existing verified ComfyUI installation and already available model weights were used. A fresh installation has not been tested. The table above describes earlier hardware runs; the new EVO-X2 test is documented separately. The music short film also uses targeted new ChatGPT image references and is not an unchanged output of this download.
-
-The API connection is local and uses no login. See [authentication and requests](AUTHENTIFIZIERUNG.md).
+The API connection is local and uses no login: [AUTHENTIFIZIERUNG.md](AUTHENTIFIZIERUNG.md).
